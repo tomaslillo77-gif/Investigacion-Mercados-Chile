@@ -1,0 +1,74 @@
+arquitectura,instrumento,diccionario,isin,bloomberg,nemotecnico,serie,comision,moneda
+abierta_dolares,Core S&P 500 UCIT,Core S&P 500 UCIT,IE00B5BMR087,CSPX LN EQUITY,n.a.,ETF,0.001,USD
+abierta_dolares,JP Morgan US Select Equity,JP Morgan US Select Equity,LU0087133087,JPMUSEC LX Equity,n.a.,C,0.007,USD
+abierta_dolares,Schroder US Large Cap,Schroder US Large Cap,LU0106261539,SCHUSCA LX EQUITY,n.a.,C,0.008,USD
+abierta_dolares,Janus Henderson Pan European,Janus Henderson Pan European,LU2589257349,JAHPEF2 LX Equity,n.a.,F2,0.01,USD
+abierta_dolares,Fidelity Emerging Asia,Fidelity Emerging Asia,LU0390711777,FFEMASY LX Equity,n.a.,Y,0.011,USD
+abierta_dolares,Schroder Emerging Asia,Schroder Emerging Asia,LU0181496059,SCHECAC LX Equity,n.a.,C,0.013,USD
+abierta_dolares,DWS LatAm Equity,DWS LatAm Equity,LU2032727740,DWLAEUT LX Equity,n.a.,TFC,0.011,USD
+abierta_dolares,iShares Latam UCITS,Latam Equity UCIT,IE00B27YCK28,DLTM LN Equity,n.a.,ETF,0.002,USD
+abierta_dolares,Amundi Latam UCITS,Amundi Latam UCIT,LU1681045297,ALAU LN Equity,n.a.,ETF,0.002,USD
+abierta_dolares,Amundi US Corporate,Amundi US corporate,LU2224462361,AMUCBIU LX Equity,n.a.,I2,0.006,USD
+abierta_dolares,US Investment Grade UCIT,US Investment grade UCIT,IE00BYXYYJ35,LQDA LN EQUITY,n.a.,ETF,0.002,USD
+abierta_dolares,Schroder Global Corporate,Schroder global corporate,LU0106258741,SCHHGCA LX Equity,n.a.,C,0.006,USD
+abierta_dolares,Nomura US High Yield,Nomura US high yield,IE00B3RW8498,NUSHYIU ID Equity,n.a.,I,0.006,USD
+abierta_dolares,JP Morgan US High Yield,JP Morgan US high yield,LU0749328273,JPUSHCU LX Equity,n.a.,C,0.005,USD
+abierta_dolares,US High Yield UCIT,US high yield UCIT,IE00BYXYYL56,IHYA LN Equity,n.a.,ETF,0.006,USD
+abierta_dolares,JP Morgan Emerging USD,JP Morgan Emerging USD,IE00BFM6TD65,EMCA LN Equity,n.a.,ETF,0.005,USD
+abierta_dolares,Ninety One Latam Debt,Ninety One Latam Debt,LU0492943013,INLACIA LX Equity,n.a.,I,0.01,USD
+abierta_dolares,Pimco Income Fund,Pimco income fund,IE00B87KCF77,PIMINIA ID Equity,n.a.,I,0.006,USD
+abierta_dolares,Fidelity Global Short Duration,Fidelity global short duration,LU1797663371,FFGSYAU LX Equity,n.a.,Y,0.007,USD
+abierta_dolares,Amundi US Short Duration,Amundi US short duration,LU1882443358,APUSI2U LX Equity,n.a.,I2,0.004,USD
+abierta_dolares,USD Floating Rate UCIT,USD floating rate UCIT,IE00BDFGJ627,FLOA LN EQUITY,n.a.,ETF,0.001,USD
+abierta_dolares,Hamilton Lane Global Private Assets,Hamilton Lane G private assets *,LU2008199189,HLGPAFI LX Equity,n.a.,I,0.015,USD
+abierta_dolares,Toesca Chile Equities,Toesca Chile equities,n.a.,TCHIEQB CI Equity,CFMTOEEQUB,B,0.017,CLP
+abierta_dolares,Moneda Renta Variable Chile,Moneda renta variable Chile,n.a.,CFIMRVC CI EQUITY,CFIMRVCHA,A,0.01,CLP
+abierta_dolares,Credicorp Capital Spread Corporativo,Credicorp spread corporativo,n.a.,IMTSCLI CI Equity,CFIIMSCLI,I,0.007,CLP
+abierta_dolares,Moneda Deuda Chile,Moneda deuda Chile,n.a.,MODECHI CI Equity,CFIMDCHI,I,0.005,CLP
+abierta_dolares,BTG Pactual Deuda Corporativa,BTG Pactual deuda corporativa,n.a.,DCORPCH CI Equity,CFIBPDCCHF,F,0.005,CLP
+abierta_dolares,BTG Pactual Deuda Activa,BTG Pactual deuda activa,n.a.,BTGDACP CI Equity,CFIBTGDAPI,I,0.007,CLP
+abierta_dolares,Scotia Largo plazo UF,Scotia largo plazo UF,n.a.,SDLPUWL CI Equity,n.a.,SBK,0.0,CLP
+abierta_pesos,Core S&P 500 UCIT,Core S&P 500 UCIT,IE00B5BMR087,CSPX LN EQUITY,n.a.,ETF,0.001,USD
+abierta_pesos,JP Morgan US Select Equity,JP Morgan US Select Equity,LU0087133087,JPMUSEC LX Equity,n.a.,C,0.007,USD
+abierta_pesos,Schroder US Large Cap,Schroder US Large Cap,LU0106261539,SCHUSCA LX EQUITY,n.a.,C,0.008,USD
+abierta_pesos,Janus Henderson Pan European,Janus Henderson Pan European,LU2589257349,JAHPEF2 LX Equity,n.a.,F2,0.01,USD
+abierta_pesos,Fidelity Emerging Asia,Fidelity Emerging Asia,LU0390711777,FFEMASY LX Equity,n.a.,Y,0.011,USD
+abierta_pesos,Schroder Emerging Asia,Schroder Emerging Asia,LU0181496059,SCHECAC LX Equity,n.a.,C,0.013,USD
+abierta_pesos,DWS LatAm Equity,DWS LatAm Equity,LU2032727740,DWLAEUT LX Equity,n.a.,TFC,0.011,USD
+abierta_pesos,iShares Latam UCITS,Latam Equity UCIT,IE00B27YCK28,DLTM LN Equity,n.a.,ETF,0.002,USD
+abierta_pesos,Amundi Latam UCITS,Amundi Latam UCIT,LU1681045297,ALAU LN Equity,n.a.,ETF,0.002,USD
+abierta_pesos,Amundi US Corporate,Amundi US corporate,LU2224462361,AMUCBIU LX Equity,n.a.,I2,0.006,USD
+abierta_pesos,US Investment Grade UCIT,US Investment grade UCIT,IE00BYXYYJ35,LQDA LN EQUITY,n.a.,ETF,0.002,USD
+abierta_pesos,Schroder Global Corporate,Schroder global corporate,LU0106258741,SCHHGCA LX Equity,n.a.,C,0.006,USD
+abierta_pesos,Nomura US High Yield,Nomura US high yield,IE00B3RW8498,NUSHYIU ID Equity,n.a.,I,0.006,USD
+abierta_pesos,JP Morgan US High Yield,JP Morgan US high yield,LU0749328273,JPUSHCU LX Equity,n.a.,C,0.005,USD
+abierta_pesos,US High Yield UCIT,US high yield UCIT,IE00BYXYYL56,IHYA LN Equity,n.a.,ETF,0.006,USD
+abierta_pesos,JP Morgan Emerging USD,JP Morgan Emerging USD,IE00BFM6TD65,EMCA LN Equity,n.a.,ETF,0.005,USD
+abierta_pesos,Ninety One Latam Debt,Ninety One Latam Debt,LU0492943013,INLACIA LX Equity,n.a.,I,0.01,USD
+abierta_pesos,Pimco Income Fund,Pimco income fund,IE00B87KCF77,PIMINIA ID Equity,n.a.,I,0.006,USD
+abierta_pesos,Fidelity Global Short Duration,Fidelity global short duration,LU1797663371,FFGSYAU LX Equity,n.a.,Y,0.007,USD
+abierta_pesos,Amundi US Short Duration,Amundi US short duration,LU1882443358,APUSI2U LX Equity,n.a.,I2,0.004,USD
+abierta_pesos,USD Floating Rate UCIT,USD floating rate UCIT,IE00BDFGJ627,FLOA LN EQUITY,n.a.,ETF,0.001,USD
+abierta_pesos,Hamilton Lane Global Private Assets,Hamilton Lane G private assets *,LU2008199189,HLGPAFI LX Equity,n.a.,I,0.015,USD
+abierta_pesos,Toesca Chile Equities,Toesca Chile equities,n.a.,TCHIEQB CI Equity,CFMTOEEQUB,B,0.017,CLP
+abierta_pesos,Moneda Renta Variable Chile,Moneda renta variable Chile,n.a.,CFIMRVC CI EQUITY,CFIMRVCHA,A,0.01,CLP
+abierta_pesos,Credicorp Capital Spread Corporativo,Credicorp spread corporativo,n.a.,IMTSCLI CI Equity,CFIIMSCLI,I,0.007,CLP
+abierta_pesos,Moneda Deuda Chile,Moneda deuda Chile,n.a.,MODECHI CI Equity,CFIMDCHI,I,0.005,CLP
+abierta_pesos,BTG Pactual Deuda Corporativa,BTG Pactual deuda corporativa,n.a.,DCORPCH CI Equity,CFIBPDCCHF,F,0.005,CLP
+abierta_pesos,BTG Pactual Deuda Activa,BTG Pactual deuda activa,n.a.,BTGDACP CI Equity,CFIBTGDAPI,I,0.007,CLP
+abierta_pesos,Scotia Largo plazo UF,Scotia largo plazo UF,n.a.,SDLPUWL CI Equity,n.a.,SBK,0.0,CLP
+abierta_local,Blackrock-Core S&P 500,Core S&P 500 ETF,n.a.,IVV US Equity,IVV / IVVCL,,0.0,USD
+abierta_local,Scotia-AGF-Acciones US,Scotia acciones USA,n.a.,SACUSAW CI Equity,n.a.,,0.0,USD
+abierta_local,Blackrock-Europa (c/U.K),Europe equity ETF,n.a.,IEV US Equity,IEV / IEV CL,,0.006,USD
+abierta_local,Blackrock-MSCI Mercados Emergentes,Emerging equity ETF,n.a.,EEM US Equity,EEM / EEMCL,,0.007,USD
+abierta_local,Blackrock-Latinoamérica 40,Latam equity ETF,n.a.,ILF US Equity,ILF / ILFCL,,0.005,USD
+abierta_local,Toesca AGF-CHILE EQUITIES,Toesca Chile equities,n.a.,TCHIEQI CI EQUITY,CFMTOEEQUB,B,0.019,CLP
+abierta_local,Moneda AGF-RV CHILE,Moneda renta variable Chile,n.a.,CFIMRVC CI EQUITY,CFIMRVCHA,A,0.01,CLP
+abierta_local,Scotia-Deuda Sustentable Global,Scotia deuda sustentable,n.a.,SDSGDWT CI Equity,n.a.,SBK,0.0,USD
+abierta_local,Moneda-renta fija internacional,Moneda renta fija internacional,n.a.,MRFIIGA CI Equity,CFIMRFIIGA,A,0.011,USD
+abierta_local,Blackrock-Mercados Emergentes,Emerging Markets Debt ETF,n.a.,EMB CI Equity,EMB CL,,0.004,USD
+abierta_local,Scotia-Money Market Dólar,Scotia money market dólar,n.a.,SMMUSDS CI Equity,n.a.,Small,0.005,USD
+abierta_local,Credicorp Capital AGF-SPREAD CORP,Credicorp spread corporativo,n.a.,IMTSCLI CI Equity,CFIIMSCLI,I,0.007,CLP
+abierta_local,BICE-Alternativos,Bice activos alternativos,LU2485281252,XPMIX US Equity,CFIB1ALT,A,0.035,USD
+cerrada_pesos,Acciones USA,Scotia acciones USA,n.a.,SACUSAW CI Equity,n.a.,Wealth,0.015,USD
+cerrada_pesos,Deuda Mediano Plazo UF,Scotia mediano plazo UF,n.a.,SMPUFWL CI Equity,n.a.,Wealth,0.008,CLP

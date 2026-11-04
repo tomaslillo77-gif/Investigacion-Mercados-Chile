@@ -1,0 +1,85 @@
+# Carteras gestionadas armadas solo con fondos mutuos Scotia: INFORMACION PUBLICA (fondos y series de la CMF).
+# Criterio de construcción:
+#  - El riesgo del perfil lo define sobre todo el % de renta variable (asset allocation); dentro de la renta variable se
+#    mantiene un mix estratégico parecido entre perfiles: EE.UU. como núcleo (mayor mercado y más líquido), Europa como
+#    segundo desarrollado, Latinoamérica como mercado de mayor riesgo y Chile como sesgo local (20 % de la renta variable).
+#  - Japón y Emergentes no tienen fondo Scotia, así que no se invierte en ellos.
+#  - Activos alternativos: Scotia Real Estate Global (acciones inmobiliarias globales). Se comporta como renta variable con
+#    renta por arriendos y cobertura parcial de inflación; diversifica, pero es volátil, así que no entra en Preservación y
+#    crece con el riesgo del perfil (0/3/5/6/8 %). Sale del presupuesto de renta variable: la suma de renta variable y
+#    alternativos sigue siendo 20/40/50/60/80 %, el riesgo total de cada perfil no cambia.
+#  - La renta fija es solo local (fondos en UF y pesos): es la parte estable de la cartera. En los perfiles de menor riesgo
+#    usa más duración (deuda larga en UF) para devengar más; a medida que sube la renta variable, la renta fija se acorta
+#    y pasa a ser reserva de liquidez (corto plazo UF), para poder rebalancear sin vender acciones en mal momento.
+#  - Se evitaron los fondos de deuda en dólares (DDA Global USD, Deuda Latam Dólar): rentan poco para su costo y la
+#    renta variable ya aporta exposición al dólar y al euro.
+# Los pesos dentro de cada clase son relativos (se normalizan a 100). Los % de renta variable de los perfiles distintos
+# de Preservación son un punto de partida a validar con el equipo.
+agf: SCOTIA                       # se busca en nombre_agf de la CMF (SCOTIA, SCOTIA CHILE)
+serie_preferida: WEALTH           # serie usada por cada fondo; si no existe, la de mayor patrimonio (o `serie` del fondo)
+
+# Orden de visualización, igual que en Client Portal
+orden:
+  Renta variable: [Estados Unidos, Europa, Japón, Latinoamérica, Emergentes, Chile, Global]
+  Renta fija: [Local, Internacional]
+  Activos alternativos: [Real estate]
+
+# Cada fondo Scotia de la CMF en una sola categoría (la que se muestra). Los balanceados ya son mezclas y no se usan.
+fondos:
+  ACCIONES USA:                  {clase: Renta variable, sub: Estados Unidos}
+  RV EUROPA:                     {clase: Renta variable, sub: Europa}
+  LATAM:                         {clase: Renta variable, sub: Latinoamérica}
+  ACCIONES CHILE:                {clase: Renta variable, sub: Chile}
+  SCOTIA ACCIONES CHILE MID CAP: {clase: Renta variable, sub: Chile}
+  RV GLOBAL:                     {clase: Renta variable, sub: Global}
+  RV GLOBAL DOLAR:               {clase: Renta variable, sub: Global}
+  DEUDA M. PLAZO UF:             {clase: Renta fija, sub: Local}
+  DEUDA MEDIANO PLAZO:           {clase: Renta fija, sub: Local}
+  DEUDA LARGO PLAZO UF:          {clase: Renta fija, sub: Local}
+  DEUDA CHILE FLEXIBLE:          {clase: Renta fija, sub: Local}
+  CORTO PLAZO UF:                {clase: Renta fija, sub: Local}
+  MAS CONSERVADOR:               {clase: Renta fija, sub: Local}
+  MONEY MARKET:                  {clase: Renta fija, sub: Local}
+  SCOTIA LIQUIDEZ:               {clase: Renta fija, sub: Local}
+  DDA GLOBAL USD:                {clase: Renta fija, sub: Internacional}
+  DEUDA LATAM DOLAR:             {clase: Renta fija, sub: Internacional}
+  MONEY MARKET DOLAR:            {clase: Renta fija, sub: Internacional}
+  RETAIL DOLAR:                  {clase: Renta fija, sub: Internacional}
+  CONSERVADOR:                   {clase: Balanceado}
+  PORTAFOLIO MODERADO:           {clase: Balanceado}
+  ARRIESGADO:                    {clase: Balanceado}
+  MAS ARRIESGADO:                {clase: Balanceado}
+  SCOTIA REAL ESTATE GLOBAL:     {clase: Activos alternativos, sub: Real estate}
+
+# rv = % de la cartera en renta variable, alt = % en activos alternativos; el resto es renta fija. renta_variable,
+# renta_fija y alternativos: peso relativo de cada fondo dentro de su clase.
+perfiles:
+  PRESERVACION:                   # 20/80, el ejemplo del equipo: 8 % EE.UU., 5 % Europa, 3 % Latam, 4 % Chile
+    rv: 20
+    alt: 0
+    renta_variable: {ACCIONES USA: 40, RV EUROPA: 25, LATAM: 15, ACCIONES CHILE: 20}
+    renta_fija: {DEUDA M. PLAZO UF: 1, DEUDA MEDIANO PLAZO: 1, DEUDA LARGO PLAZO UF: 1}
+  DEFENSIVO:                      # 37 RV + 3 alt + 60 RF
+    rv: 37
+    alt: 3
+    renta_variable: {ACCIONES USA: 40, RV EUROPA: 25, LATAM: 15, ACCIONES CHILE: 20}
+    renta_fija: {DEUDA M. PLAZO UF: 30, DEUDA MEDIANO PLAZO: 25, DEUDA LARGO PLAZO UF: 25, CORTO PLAZO UF: 20}
+    alternativos: {SCOTIA REAL ESTATE GLOBAL: 1}
+  EQUILIBRADO:                    # 45 RV + 5 alt + 50 RF
+    rv: 45
+    alt: 5
+    renta_variable: {ACCIONES USA: 45, RV EUROPA: 20, LATAM: 15, ACCIONES CHILE: 20}
+    renta_fija: {DEUDA M. PLAZO UF: 35, DEUDA MEDIANO PLAZO: 30, DEUDA LARGO PLAZO UF: 20, CORTO PLAZO UF: 15}
+    alternativos: {SCOTIA REAL ESTATE GLOBAL: 1}
+  CLASICO_60_40:                  # 54 RV + 6 alt + 40 RF
+    rv: 54
+    alt: 6
+    renta_variable: {ACCIONES USA: 45, RV EUROPA: 20, LATAM: 15, ACCIONES CHILE: 20}
+    renta_fija: {DEUDA M. PLAZO UF: 40, DEUDA MEDIANO PLAZO: 30, CORTO PLAZO UF: 30}
+    alternativos: {SCOTIA REAL ESTATE GLOBAL: 1}
+  CRECIMIENTO:                    # 72 RV + 8 alt + 20 RF, menos Latam (mayor volatilidad) y más EE.UU.
+    rv: 72
+    alt: 8
+    renta_variable: {ACCIONES USA: 50, RV EUROPA: 20, LATAM: 10, ACCIONES CHILE: 20}
+    renta_fija: {DEUDA M. PLAZO UF: 35, DEUDA MEDIANO PLAZO: 30, CORTO PLAZO UF: 35}
+    alternativos: {SCOTIA REAL ESTATE GLOBAL: 1}

@@ -1,0 +1,9 @@
+# Lista de instrumentos elegibles para armar portafolios (catálogo). Ver docs/superpowers/specs/2026-10-27-constructor-de-portafolios-design.md, sección 3.1.
+ruta: data/catalogo_instrumentos.xlsx   # Excel que mantiene el equipo; si no existe, se usa el catálogo derivado de la hoja de carteras
+hoja_instrumentos: Instrumentos
+hoja_alias: Alias
+header_row: 0
+obsoleto_dias: 120                      # `fecha_dato` más antigua que esto = desglose obsoleto (aviso)
+tolerancia_desglose: 0.005              # diferencia aceptada al sumar porcentajes del desglose
+clases: [Renta variable, Renta fija, Alternativos, Caja, Otro]
+tipos: [Fondo mutuo local, Fondo internacional, ETF, Acción, Bono, Depósito a plazo, Caja, Otro]

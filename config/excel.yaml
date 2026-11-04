@@ -1,0 +1,56 @@
+ruta: data/Engine WM Dummy Completo.xlsx
+header_row: 2
+hojas:
+  clientes: Dummy Metricas
+  posiciones: Dummy Posiciones
+  carteras: Dummy Carteras
+# columna real -> columna canónica
+# hoja opcional: aportes y retiros por cliente y por quincena (fecha de inicio de la quincena); si falta se usan
+# aportes_periodo / retiros_periodo de la hoja de clientes
+hoja_flujos: Dummy Flujos
+columnas_flujos:
+  RUT Normalizado: rut
+  Periodo: periodo
+  Aportes (CLP): aportes_clp
+  Retiros (CLP): retiros_clp
+columnas_clientes:
+  RUT Normalizado: rut
+  Entidad: entidad
+  Household: household
+  Servicio: servicio
+  WM: wm
+  IA: advisor
+  Perfil de Riesgo: perfil
+  Perfil Normalizado: perfil_norm
+  Última Reunión: ultima_reunion
+  Valor de Mercado (CLP): aum_clp
+  CAD (USD MM): cad_usd_mm
+  ultimo_contacto: ultimo_contacto
+  tiene_wealth_plan: tiene_wealth_plan
+  fecha_wealth_plan: fecha_wealth_plan
+  share_of_wallet_pct: share_of_wallet_pct
+  desvio_modelo_pct: desvio_modelo_pct
+  aportes_periodo: aportes_periodo
+  retiros_periodo: retiros_periodo
+  periodo: periodo
+  arquitectura: arquitectura
+  rentabilidad_12m_pct: rentabilidad_12m_pct
+  comision_anual_clp: comision_anual_clp
+  comision_cobrada_clp: comision_cobrada_clp
+  com_tra_renta_variable_clp: com_tra_renta_variable_clp
+  com_tra_renta_fija_clp: com_tra_renta_fija_clp
+  com_tra_intermediacion_clp: com_tra_intermediacion_clp
+  com_tra_allfunds_clp: com_tra_allfunds_clp
+  nombre_cliente: nombre_cliente
+  tipo_persona: tipo_persona
+  nombre_advisor: nombre_advisor
+columnas_posiciones:
+  RUT Normalizado: rut
+  Instrumento: instrumento
+  Tipo: tipo
+  Isin: isin
+  VM Numérico: valor_clp
+  G/P no Realizada: gp_no_realizada
+  Rent. no Realizada: rent_no_realizada
+  Clase de activo: clase_activo
+  Costo tributario (CLP): costo_tributario_clp

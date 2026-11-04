@@ -1,0 +1,5 @@
+# Datos de AFP (módulo AFP): valor cuota y patrimonio por AFP y fondo, de collabmarket/data_afp
+# (republica los datos de la Superintendencia de Pensiones cada día).
+url_base: https://raw.githubusercontent.com/collabmarket/data_afp/master/data
+ventana_anios: 10          # años de historia que se guardan en cada foto
+snapshots_dir: data/afp    # fotos con fecha de corte, no se sobrescriben

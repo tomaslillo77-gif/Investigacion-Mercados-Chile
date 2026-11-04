@@ -1,0 +1,15 @@
+# Usuarios y roles. USUARIOS Y CONTRASEÑAS DUMMY: reemplazar por el login real antes de usar con datos reales.
+# Todo código de la columna IA del Excel entra también como "Investment Advisor" (se escribe el código o el nombre).
+# Contraseña de cada usuario: `pin` si lo tiene; si no, `pin_por_defecto`. Si ambos faltan, rige config/advisors.yaml.
+pin_por_defecto: "123"
+usuarios:
+  md: {nombre: Managing Director, rol: Managing Director}
+  # `advisor: primero` = el primer advisor del Excel (usuario genérico de prueba); también puede ir un código IA_...
+  advisor: {nombre: Advisor, rol: Investment Advisor, advisor: primero}
+  estrategia: {nombre: Equipo de Estrategia, rol: Estrategia}
+# Estrategia y Mercados las ven advisors, MD y el equipo de Estrategia; lo que cambia por rol son las vistas de Client Portal
+# (advisor: Home, Clientes, Ficha...; MD: Resumen, Manejo de negocio...).
+roles:
+  Investment Advisor: [Client Portal, Estrategia, Mercados]
+  Managing Director: [Client Portal, Estrategia, Mercados]
+  Estrategia: [Estrategia, Mercados]

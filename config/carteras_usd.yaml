@@ -1,0 +1,76 @@
+# Carteras de la arquitectura Abierta USD armadas con los fondos internacionales del catálogo (datos de Yahoo Finance).
+# Criterio de construcción (el mismo que las carteras gestionadas Scotia, adaptado a fondos en dólares):
+#  - El riesgo del perfil lo define el % de renta variable (asset allocation): 20/40/50/60/80 % entre renta variable y
+#    alternativos, y el resto renta fija. Los alternativos salen del presupuesto de renta variable (0/3/5/6/8 %).
+#  - Renta variable: EE.UU. como núcleo (ETF indexado S&P 500 como pieza principal por su bajo costo, más dos gestores
+#    activos para diversificar el estilo), Europa como segundo mercado desarrollado y Latinoamérica como mercado de mayor
+#    riesgo (menos peso en Crecimiento). No hay fondo con datos para Japón ni Chile; los de Asia emergente no tienen datos
+#    en Yahoo todavía y quedan fuera hasta tener su ticker (ver config/equivalencias_fondos.csv).
+#  - Renta fija: a menor riesgo, más calidad crediticia y menor duración (corto plazo, floating, investment grade); en los
+#    perfiles con más riesgo se suma crédito de mayor retorno (high yield, deuda emergente, multisector) en pequeña
+#    proporción, y siempre queda un núcleo investment grade. Pimco Income (multisector) se clasifica como high yield por su
+#    parte de crédito bajo grado de inversión.
+#  - Alternativos: BICE-Alternativos. Hamilton Lane Global Private Assets no se usa porque Yahoo no lo encuentra.
+# Los pesos dentro de cada clase son relativos (se normalizan a 100). Es un punto de partida a validar con el equipo.
+fuente: yahoo
+
+orden:
+  Renta variable: [Estados Unidos, Europa, Latinoamérica, Emergentes, Chile]
+  Renta fija: [Investment Grade, High Yield]
+  Activos alternativos: [Alternativos]
+
+fondos:
+  Core S&P 500 UCIT:                    {clase: Renta variable, sub: Estados Unidos}
+  JP Morgan US Select Equity:           {clase: Renta variable, sub: Estados Unidos}
+  Schroder US Large Cap:                {clase: Renta variable, sub: Estados Unidos}
+  Janus Henderson Pan European:         {clase: Renta variable, sub: Europa}
+  iShares Latam UCITS:                  {clase: Renta variable, sub: Latinoamérica}
+  Amundi Latam UCITS:                   {clase: Renta variable, sub: Latinoamérica}
+  DWS LatAm Equity:                     {clase: Renta variable, sub: Latinoamérica}
+  Fidelity Emerging Asia:               {clase: Renta variable, sub: Emergentes}
+  Schroder Emerging Asia:               {clase: Renta variable, sub: Emergentes}
+  Amundi US Short Duration:             {clase: Renta fija, sub: Investment Grade}
+  Fidelity Global Short Duration:       {clase: Renta fija, sub: Investment Grade}
+  US Investment Grade UCIT:             {clase: Renta fija, sub: Investment Grade}
+  Amundi US Corporate:                  {clase: Renta fija, sub: Investment Grade}
+  USD Floating Rate UCIT:               {clase: Renta fija, sub: Investment Grade}
+  Schroder Global Corporate:            {clase: Renta fija, sub: Investment Grade}
+  Pimco Income Fund:                    {clase: Renta fija, sub: High Yield}
+  US High Yield UCIT:                   {clase: Renta fija, sub: High Yield}
+  JP Morgan US High Yield:              {clase: Renta fija, sub: High Yield}
+  Nomura US High Yield:                 {clase: Renta fija, sub: High Yield}
+  JP Morgan Emerging USD:               {clase: Renta fija, sub: High Yield}
+  Ninety One Latam Debt:                {clase: Renta fija, sub: High Yield}
+  BICE-Alternativos:                    {clase: Activos alternativos, sub: Alternativos}
+  Hamilton Lane Global Private Assets:  {clase: Activos alternativos, sub: Alternativos}
+
+perfiles:
+  PRESERVACION:                   # 20 RV + 0 alt + 80 RF: calidad y corta duración
+    rv: 20
+    alt: 0
+    renta_variable: {Core S&P 500 UCIT: 40, JP Morgan US Select Equity: 15, Janus Henderson Pan European: 30, iShares Latam UCITS: 15}
+    renta_fija: {Amundi US Short Duration: 25, Fidelity Global Short Duration: 20, US Investment Grade UCIT: 25, Amundi US Corporate: 15, USD Floating Rate UCIT: 15}
+  DEFENSIVO:                      # 37 RV + 3 alt + 60 RF
+    rv: 37
+    alt: 3
+    renta_variable: {Core S&P 500 UCIT: 40, JP Morgan US Select Equity: 15, Janus Henderson Pan European: 30, iShares Latam UCITS: 15}
+    renta_fija: {Amundi US Short Duration: 20, Fidelity Global Short Duration: 15, US Investment Grade UCIT: 25, Amundi US Corporate: 10, USD Floating Rate UCIT: 10, Pimco Income Fund: 10, US High Yield UCIT: 10}
+    alternativos: {BICE-Alternativos: 1}
+  EQUILIBRADO:                    # 45 RV + 5 alt + 50 RF
+    rv: 45
+    alt: 5
+    renta_variable: {Core S&P 500 UCIT: 35, JP Morgan US Select Equity: 12, Schroder US Large Cap: 13, Janus Henderson Pan European: 25, iShares Latam UCITS: 8, Amundi Latam UCITS: 7}
+    renta_fija: {Amundi US Short Duration: 15, US Investment Grade UCIT: 25, Amundi US Corporate: 10, USD Floating Rate UCIT: 10, Pimco Income Fund: 15, US High Yield UCIT: 15, JP Morgan Emerging USD: 10}
+    alternativos: {BICE-Alternativos: 1}
+  CLASICO_60_40:                  # 54 RV + 6 alt + 40 RF
+    rv: 54
+    alt: 6
+    renta_variable: {Core S&P 500 UCIT: 35, JP Morgan US Select Equity: 12, Schroder US Large Cap: 13, Janus Henderson Pan European: 25, iShares Latam UCITS: 8, Amundi Latam UCITS: 7}
+    renta_fija: {Amundi US Short Duration: 15, US Investment Grade UCIT: 20, Pimco Income Fund: 20, US High Yield UCIT: 15, JP Morgan Emerging USD: 15, USD Floating Rate UCIT: 15}
+    alternativos: {BICE-Alternativos: 1}
+  CRECIMIENTO:                    # 72 RV + 8 alt + 20 RF, más EE.UU. y menos Latam (mayor volatilidad)
+    rv: 72
+    alt: 8
+    renta_variable: {Core S&P 500 UCIT: 40, JP Morgan US Select Equity: 12, Schroder US Large Cap: 13, Janus Henderson Pan European: 25, iShares Latam UCITS: 10}
+    renta_fija: {US Investment Grade UCIT: 30, Amundi US Short Duration: 25, USD Floating Rate UCIT: 15, Pimco Income Fund: 15, US High Yield UCIT: 15}
+    alternativos: {BICE-Alternativos: 1}

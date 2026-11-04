@@ -1,0 +1,6 @@
+pesos:
+  tamano: 0.25
+  riesgo_fuga: 0.30
+  ingresos: 0.20
+  oportunidad: 0.25
+dias_sin_contacto_max: 180

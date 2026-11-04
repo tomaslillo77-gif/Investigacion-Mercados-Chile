@@ -1,0 +1,30 @@
+venv/
+__pycache__/
+.env
+backups/
+exports/
+.superpowers/
+graphify-out/cache/
+*.pyc
+data/cmf/
+data/mercado/
+data/mercado_externo/
+data/afp/
+
+# Datos reales de clientes: nunca al repositorio. Solo se versionan los Excel ficticios y la plantilla.
+*.xlsx
+*.xls
+*.xlsm
+data/*.csv
+!data/Engine WM Dummy Completo.xlsx
+!data/Engine WM Dummy.xlsx
+!data/Plantilla Engine WM.xlsx
+
+# volcados de los Excel que genera graphify: pueden contener datos de las planillas
+graphify-out/converted/
+
+# ajustes propios de cada computador (rutas, nombres de columnas reales): no se versionan ni se pisan al actualizar
+config/local/
+
+# scripts propios de este computador (por ejemplo, el que transforma el Excel real al formato del portal)
+scripts/local/

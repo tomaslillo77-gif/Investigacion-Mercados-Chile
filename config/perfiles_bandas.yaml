@@ -1,0 +1,15 @@
+# Bandas de riesgo por perfil y reglas de aviso del constructor de portafolios.
+# PROVISORIO: criterio propio a validar con el equipo (ver docs/PORTAFOLIOS_DUDAS.md, D3). Los avisos NO bloquean el guardado: el criterio es del advisor.
+# Riesgo = renta variable + alternativos, como % de la cartera objetivo. Un objetivo fuera de la banda del perfil del cliente produce un aviso.
+bandas:
+  PRESERVACION:  {riesgo_min: 0,  riesgo_max: 30}
+  DEFENSIVO:     {riesgo_min: 20, riesgo_max: 50}
+  EQUILIBRADO:   {riesgo_min: 40, riesgo_max: 60}
+  CLASICO_60_40: {riesgo_min: 50, riesgo_max: 70}
+  CRECIMIENTO:   {riesgo_min: 70, riesgo_max: 100}
+desvio_max_pp: 3                    # límite del desvío del cliente vs su portafolio: suma de |diferencia de peso| por instrumento (respuesta del usuario, D3)
+nota_obligatoria_si_desvio: false   # hoy la nota es opcional; si la empresa quiere exigirla, cambiar a true
+desactualizado_meses: 6             # un portafolio vigente con más de estos meses se marca «desactualizado»
+tolerancia_suma_pp: 0.05            # diferencia aceptada al sumar los pesos a 100 (en puntos porcentuales)
+max_instrumentos: 25                # tope de líneas de un portafolio (aviso al pasarlo)
+peso_minimo_pp: 0.5                 # una línea con menos peso que esto se avisa como «posición residual»

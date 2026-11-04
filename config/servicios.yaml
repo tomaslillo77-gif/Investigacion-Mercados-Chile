@@ -1,0 +1,11 @@
+# Claves en minúsculas y sin tildes -> nombre oficial
+equivalencias:
+  tra: TRA
+  transaccional: TRA
+  ase: ASE
+  asesoria: ASE
+  adc: ADC
+  self directed: Self Directed
+  cartera gestionada: Cartera Gestionada
+  deposito a plazo: Depósito a Plazo
+  dap: Depósito a Plazo

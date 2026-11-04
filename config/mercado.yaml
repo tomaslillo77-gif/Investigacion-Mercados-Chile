@@ -1,0 +1,5 @@
+# Datos de mercado para el módulo Estrategia (screener de fondos)
+cmf_dir: data/cmf                                # aquí se dejan los 4 Excel descargados a mano del Portal de Fondos Mutuos
+snapshots_dir: data/mercado                      # fotos con fecha de corte, no se sobrescriben
+equivalencias: config/equivalencias_fondos.csv   # catálogo <-> fondo CMF / tickers de otras fuentes
+externos_dir: data/mercado_externo           # fotos de Yahoo Finance (internacionales) y su caché

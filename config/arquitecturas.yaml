@@ -1,0 +1,15 @@
+# Nombre visible (provisorio, ver Pendientes del plan)
+nombres:
+  abierta_dolares: Abierta USD
+  abierta_pesos: Abierta Pesos
+  abierta_local: Local
+  cerrada_pesos: Cartera Gestionada
+# perfil normalizado (columna del Excel) -> nombre visible, en orden de menor a mayor riesgo
+perfiles_nombres:
+  PRESERVACION: Preservación
+  DEFENSIVO: Defensivo
+  EQUILIBRADO: Equilibrado
+  CLASICO_60_40: Clásico 60-40
+  CRECIMIENTO: Crecimiento
+min_cobertura: 0.60
+perfiles: [Preservación, Defensivo, Equilibrado, Clásico 60-40, Crecimiento]

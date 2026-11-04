@@ -1,0 +1,8 @@
+campos:
+  patrimonio_externo: {etiqueta: Patrimonio fuera del banco, tipo: numero}
+  share_of_wallet: {etiqueta: Share of wallet estimado (%), tipo: porcentaje}
+  wealth_plan: {etiqueta: Wealth plan, tipo: si_no}
+  global_complementario: {etiqueta: Global complementario (%), tipo: porcentaje}
+  deep_discovery: {etiqueta: Deep Discovery, tipo: si_no}
+  proxima_accion: {etiqueta: Próxima acción, tipo: texto}
+  proxima_accion_fecha: {etiqueta: Fecha próxima acción, tipo: fecha}

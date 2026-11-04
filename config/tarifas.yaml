@@ -1,0 +1,17 @@
+# Tarifas DUMMY: reemplazar por las reales de la mesa antes de usar con datos de clientes.
+# Asesoría: porcentaje anual sobre el AUM, adicional al costo de los fondos (solo ADC y ASE).
+asesoria:
+  ADC: 0.0040
+  ASE: 0.0025
+# Comisión transaccional (TRA): columna del Excel con el monto anual en CLP por tipo de producto.
+transaccional:
+  Renta Variable: com_tra_renta_variable_clp
+  Renta Fija: com_tra_renta_fija_clp
+  Intermediación: com_tra_intermediacion_clp
+  Allfunds: com_tra_allfunds_clp
+# Solo para generar el dummy: tasa anual sobre el AUM de cada producto transaccional.
+dummy_transaccional:
+  Renta Variable: 0.0020
+  Renta Fija: 0.0010
+  Intermediación: 0.0008
+  Allfunds: 0.0006

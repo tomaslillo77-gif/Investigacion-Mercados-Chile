@@ -1,0 +1,12 @@
+# Para Python 3.14. Versiones con las que pasan las 549 pruebas (Python 3.14.6). Para Python 3.13 usa requirements.txt.
+streamlit==1.66.1
+pandas==3.1.0
+numpy==2.5.4
+plotly==7.1.0
+openpyxl==3.1.5
+requests
+python-dotenv
+pyyaml
+psycopg[binary]==3.3.7
+pytest==9.2.0
+yfinance
