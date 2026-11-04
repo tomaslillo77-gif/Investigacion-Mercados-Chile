@@ -1,0 +1,483 @@
+# Guía de primera ejecución del portal (Windows)
+
+Esta guía te lleva, paso a paso, desde la carpeta recién descargada hasta el portal funcionando en tu escritorio. Tarda unos 15 minutos. No hay que programar ni editar código.
+
+El proyecto trae datos de ejemplo (500 clientes inventados), así que **la primera ejecución se hace con datos de ejemplo**. Cuando eso funcione, en el paso 6 lo conectas a tu propio Excel.
+
+**Cómo usar la terminal.** Pega o escribe **un comando por vez** y presiona **Enter** a secas (Shift+Enter solo agrega una línea y no ejecuta nada). Espera a que vuelva a aparecer el prompt antes de pegar el siguiente.
+
+---
+
+## Qué necesitas antes de empezar
+
+| Qué | Cómo comprobarlo |
+|---|---|
+| Windows con una terminal (PowerShell o Símbolo del sistema) | Menú Inicio → «PowerShell» |
+| **Python 3.13** (también sirve 3.14) | `python --version` debe decir `Python 3.13.x` |
+| El proyecto descomprimido en una carpeta | Por ejemplo `C:\proyectos\Investigacion-Mercados-Chile`. Mejor fuera de OneDrive |
+| PostgreSQL 16 o superior (opcional) | Solo hace falta para guardar portafolios, comentarios y reasignaciones. Sin él, el portal abre igual |
+
+Si `python` no se reconoce, prueba con `py --version`. Si funciona, usa `py` en lugar de `python` en todos los comandos.
+
+---
+
+## Paso 1. Abre la terminal en la carpeta del proyecto
+
+```
+cd C:\proyectos\Investigacion-Mercados-Chile
+```
+
+Cambia la ruta por la de tu carpeta. Dentro deben verse archivos como `app_v4_final.py` y `requirements.txt`; lo compruebas con `dir`.
+
+## Paso 2. Crea el entorno e instala lo necesario (una sola vez)
+
+```
+python -m venv venv
+```
+No imprime nada y tarda unos segundos. Después:
+
+```
+venv\Scripts\python -m pip install -r requirements.txt
+```
+Tarda uno o dos minutos y muestra mucho texto. Con Python 3.14 usa `requirements-py314.txt` en lugar de `requirements.txt`.
+
+Los comandos usan `venv\Scripts\python` directamente, así que no necesitas «activar» el entorno.
+
+**Si `pip` falla por certificado o conexión:** la red puede estar filtrando `pypi.org`. Prueba, en este orden: (1) usar la dirección del repositorio interno de paquetes de tu organización con `--index-url <dirección>`; (2) agregar `--trusted-host pypi.org --trusted-host files.pythonhosted.org`; (3) pedir al área de TI que habilite `pypi.org` o que instale los paquetes de `requirements.txt`.
+
+## Paso 3. Abre el portal
+
+```
+venv\Scripts\python -m streamlit run app_v4_final.py
+```
+
+Se abre el navegador en `http://localhost:8501`. Si no se abre solo, copia esa dirección en el navegador. La terminal queda ocupada mientras el portal corre; no la cierres.
+
+## Paso 4. Comprueba que funciona
+
+- Debes ver el aviso **«Datos dummy (sintéticos)»**.
+- En la barra lateral elige un **Rol** (por ejemplo Managing Director, que ve todos los clientes, o Investment Advisor, que ve solo los de un advisor). El portal **no pide PIN** por defecto.
+- Debes ver unos **500 clientes** en el listado.
+- Abre la ficha de un cliente. Con el selector **Módulo** de la barra lateral pasas entre **Client Portal**, **Estrategia** y **Mercados**.
+- Abajo en la barra lateral aparece la **versión** (un código corto y una fecha).
+
+Es normal ver el mensaje **«Base de datos no disponible»**: todavía no conectaste PostgreSQL (paso 5). Solo desactiva lo que necesita guardar información (comentarios, feedback, reasignaciones y portafolios guardados). Mercados puede mostrar «sin datos» en algunos cuadros, porque usa datos públicos de la CMF que no vienen incluidos.
+
+**Para detener el portal:** `Ctrl + C` en la terminal. **Para volver a abrirlo:** repite solo el comando del paso 3.
+
+**Prueba automática (opcional):**
+```
+venv\Scripts\python -m pip install pytest
+venv\Scripts\python -m pytest -q
+```
+No debe haber fallos. Las pruebas que usan base de datos se saltan solas si no configuraste una base de pruebas.
+
+---
+
+## Paso 5. Conecta PostgreSQL (opcional)
+
+**5.1 Crea la base de datos** (una sola vez; te pide la clave de `postgres`, que no se ve al escribirla):
+```
+psql -U postgres -c "CREATE DATABASE wm TEMPLATE template0 ENCODING 'UTF8' LOCALE 'C';"
+```
+Debe responder `CREATE DATABASE`. Si `psql` no se reconoce, usa la ruta completa, por ejemplo `"C:\Program Files\PostgreSQL\18\bin\psql.exe"`. La parte `TEMPLATE template0 … LOCALE 'C'` evita un error típico de Windows con las tildes. Si dice que la base ya existe, sigue al paso siguiente.
+
+**5.2 Crea el archivo `.env`** copiando el de ejemplo y abriéndolo:
+```
+copy .env.example .env
+notepad .env
+```
+Deja una línea con tu usuario y clave de PostgreSQL:
+```
+WM_DSN=postgresql://postgres:TU_CLAVE@localhost:5432/wm
+```
+Guarda con `Ctrl + S` y cierra. Si la clave tiene símbolos como `@` o `#`, hay que codificarlos (por ejemplo `@` se escribe `%40`).
+
+**5.3 Reinicia el portal** (`Ctrl + C` y el comando del paso 3). El aviso «Base de datos no disponible» desaparece.
+
+**No hay que ejecutar ningún script de SQL.** El portal crea las tablas solo la primera vez que se conecta, y las actualiza solo cuando bajas una versión nueva.
+
+El archivo `.env` y la carpeta `config\local\` son tuyos: no se suben a ningún repositorio y una versión nueva del proyecto no los pisa.
+
+---
+
+## Paso 6. Usa tu propio Excel
+
+La idea: **no se toca el código; solo se adapta la configuración.**
+
+### 6.1 Prepara el Excel
+El portal lee **un solo archivo** con estas hojas. Los nombres de hoja se pueden cambiar en la configuración; en el ejemplo se llaman así:
+
+| Hoja del ejemplo | Una fila es… | Para qué sirve |
+|---|---|---|
+| `Dummy Metricas` | un cliente | Clientes, patrimonio, advisor, servicio, perfil (**obligatoria**) |
+| `Dummy Posiciones` | una posición de un cliente | Ficha del cliente (sin ella, las fichas quedan vacías) |
+| `Dummy Carteras` | un instrumento dentro de un modelo | Constructor de portafolios y Alineación |
+| `Dummy Flujos` | un cliente en una quincena | Gráfico de aportes y retiros (opcional) |
+
+El formato exacto de cada columna está en el **Anexo** de esta guía. Si tus datos están en varios archivos, el anexo trae un prompt listo para pedirle a un asistente (por ejemplo, Copilot) que los consolide en este formato, usando como molde el Excel de ejemplo `data\Engine WM Dummy Completo.xlsx`.
+
+También puedes generar una plantilla vacía con todas las hojas y columnas esperadas:
+```
+venv\Scripts\python scripts\make_template.py
+```
+Queda en `data\Plantilla Engine WM.xlsx`.
+
+**Importante:** el nombre del archivo **no** debe contener «dummy» ni «sample»; si lo contiene, el portal sigue mostrando el aviso «Datos dummy».
+
+### 6.2 Dónde dejar el Excel
+Lo recomendable es guardarlo **fuera** de la carpeta del proyecto, y decirle al portal dónde está agregando una línea al archivo `.env`:
+```
+WM_EXCEL=C:\Datos\EngineWM.xlsx
+```
+Así los datos nunca quedan mezclados con el código. Cada vez que haya datos nuevos, reemplaza el archivo **con el mismo nombre** y recarga la página con F5: el portal detecta el cambio solo.
+
+### 6.3 Revisa el archivo antes de abrir el portal
+```
+venv\Scripts\python scripts\verificar_excel.py --excel "C:\Datos\EngineWM.xlsx"
+```
+Te dice, en español y **sin mostrar RUT, nombres ni montos**, qué hoja o columna no encontró, cuál es la más parecida y **qué líneas agregar en la configuración**. También detecta encabezados en otra fila, RUT que no calzan entre hojas y diferencias entre el patrimonio y la suma de las posiciones. Termina con error si falta algo imprescindible. Corre el verificador cada vez que cambie el formato del archivo.
+
+Si lo corres sobre el Excel de ejemplo (`data\Engine WM Dummy Completo.xlsx`) verás 0 errores y 2 avisos; son casos de prueba puestos a propósito (un RUT repetido y un servicio «Sin clasificar»).
+
+### 6.4 Ajusta la configuración si los nombres no coinciden
+No edites `config\excel.yaml`. Crea la carpeta `config\local\` y dentro el archivo `excel.yaml` con **solo lo que cambia**; se mezcla sobre el original:
+
+```yaml
+# config\local\excel.yaml   (ejemplo; los nombres reales los pones tú)
+ruta: C:/Datos/EngineWM.xlsx
+header_row: 0
+hojas:
+  clientes: <nombre de la hoja de clientes>
+  posiciones: <nombre de la hoja de posiciones>
+  carteras: <nombre de la hoja de carteras>
+columnas_clientes:
+  <nombre de la columna en tu Excel>: advisor
+  <nombre de la columna en tu Excel>: aum_clp
+```
+
+- En `columnas_*`, el formato es **`nombre en tu Excel: nombre que usa el portal`**. Solo escribes el lado izquierdo; el derecho no se cambia.
+- Si el nombre difiere solo en mayúsculas, tildes o espacios de más, ni siquiera hace falta mapearlo.
+- `header_row: 0` significa que los encabezados están en la fila 1 del Excel; `header_row: 2` significa la fila 3. El verificador detecta si están en otra fila y te dice el número exacto.
+- Las listas y los valores sueltos que pongas reemplazan a los originales; los diccionarios se mezclan.
+- Lo mismo vale para los otros archivos de `config\` (por ejemplo `config\local\servicios.yaml`).
+
+Vuelve a correr el verificador hasta que no marque errores.
+
+### 6.5 Columnas obligatorias
+Si falta alguna de las cuatro críticas, el portal muestra un error:
+
+| Nombre en el portal | Qué es |
+|---|---|
+| `rut` | Identificador único del cliente |
+| `servicio` | Tipo de servicio (TRA, ASE, ADC, Self directed, Cartera gestionada, Depósito a Plazo) |
+| `advisor` | Código del advisor responsable |
+| `aum_clp` | Patrimonio del cliente en pesos |
+
+La hoja de posiciones necesita `rut`, `instrumento`, `tipo`, `isin` y `valor_clp`. Todo lo demás es opcional: si falta, el cuadro correspondiente dice «Pendiente de datos» y no es un error.
+
+### 6.6 Qué limpia el portal solo
+| Caso | Qué hace |
+|---|---|
+| Dinero con `$`, puntos o comas de miles | Lo convierte a número |
+| Porcentajes como `35%` o `15,1` | Los convierte a número |
+| Servicios escritos de distinta forma («tra», «Transaccional») | Los unifica; los que no reconoce quedan «Sin clasificar» y se avisa |
+| RUT con puntos, guion, espacios o `12345678.0` | Los deja iguales entre sí |
+| Encabezados con tildes, mayúsculas o espacios de más distintos | Los reconoce |
+| RUT repetido en la hoja de clientes | Usa la primera fila y avisa |
+| Celdas no numéricas en columnas numéricas | Las ignora y avisa cuántas fueron |
+| Archivo dañado o que no es Excel | Muestra un mensaje claro |
+
+### 6.7 Qué debes cuidar tú
+| Debe cumplirse | Por qué |
+|---|---|
+| **El RUT debe ser el mismo dato en todas las hojas.** El portal ignora puntos, guion y espacios, pero no agrega ni quita el dígito verificador | Si una hoja lo trae y otra no, el cliente aparece sin posiciones |
+| **Los perfiles normalizados** deben ser uno de cinco: `PRESERVACION`, `DEFENSIVO`, `EQUILIBRADO`, `CLASICO_60_40`, `CRECIMIENTO` | Otros valores no calzan con las bandas por perfil |
+| **Los pesos de cada modelo suman 1** (por arquitectura y perfil) | Si no, la alineación sale mal |
+| **Un solo advisor por cliente**, con el mismo código que usan los usuarios | Define quién ve a cada cliente |
+| **Columnas numéricas sin texto mezclado** («n.d.», «-») | Se ignoran, pero conviene dejarlas vacías |
+
+### 6.8 Cómo saber que quedó bien
+1. Abre el portal y revisa la sección **«Calidad de datos»** de la barra lateral. Ahí aparecen, con su nivel, las hojas o columnas que faltan y los datos incoherentes. Corrige primero los **errores**; los **avisos** revísalos; la **información** (columnas opcionales que no vienen) no requiere acción.
+2. Elige 3 clientes que conozcas y compara patrimonio, advisor y posiciones con tu fuente.
+
+Cuando el Excel ya no es de ejemplo, el aviso «Datos dummy» desaparece solo.
+
+### 6.9 Si una columna no calza
+| Qué pasa | ¿Se rompe algo? | Qué hacer |
+|---|---|---|
+| El Excel trae columnas que el portal no usa | No, se ignoran | Nada |
+| Falta una columna **opcional** | No, el cuadro dice «Pendiente de datos» | Nada |
+| La columna existe con **otro nombre** | El verificador la marca como faltante | Agrega el mapeo en `config\local\excel.yaml` |
+| Falta una columna **obligatoria** | El portal muestra un error | Arregla el origen o el mapeo |
+| Quieres mostrar algo que el portal hoy no tiene | Nada se rompe, pero no se verá | Requiere un cambio en el proyecto |
+
+No edites el Excel a mano cada mes: ajusta la configuración una vez, y si el problema viene del origen, cambia la exportación de origen.
+
+---
+
+## Paso 7. Compartir el portal con otras personas
+
+Mientras el portal corre en tu computador, otras personas de la red pueden entrar, pero solo mientras tu computador esté encendido y el portal abierto.
+
+```
+venv\Scripts\python -m streamlit run app_v4_final.py --server.address 0.0.0.0 --server.port 8501 --server.headless true
+```
+
+Averigua tu IP con `ipconfig` y comparte `http://TU_IP:8501`.
+- Puede que el firewall pida permiso para el puerto 8501; autorízalo.
+- Evita que el equipo se suspenda: Configuración → Energía → «Nunca» mientras esté enchufado.
+- Si la IP cambia al reconectarte, la dirección también cambia.
+- **Hoy el portal no tiene inicio de sesión:** cualquiera que entre elige su rol en la barra lateral y puede ver a todos los clientes. Antes de compartirlo con datos reales, activa PIN por usuario creando `config\local\advisors.yaml` con, por ejemplo, `pines: {"Managing Director": "un-pin-propio", IA_01: "otro-pin"}` (la clave es el código del advisor tal como viene en el Excel, o el nombre del rol). Los usuarios que no estén en `pines` seguirán entrando sin PIN. El PIN no reemplaza a un inicio de sesión corporativo.
+- Cada advisor ve solo a sus clientes, según el código de la columna de advisor. El Managing Director ve todo y puede reasignar clientes.
+
+---
+
+## Uso diario
+
+| Tarea | Cómo |
+|---|---|
+| Abrir | Paso 3 |
+| Cerrar | `Ctrl + C` en la terminal donde corre |
+| Datos nuevos | Reemplaza el Excel (mismo nombre) y recarga con F5 |
+| Respaldo de la base | `pg_dump -U postgres -d wm -f backup.sql`, guardado en una carpeta segura |
+| Versión nueva del proyecto | Descomprime el ZIP en una carpeta aparte; copia a ella tu `.env`, `config\local\` y `scripts\local\`; corre `venv\Scripts\python -m pip install -r requirements.txt` y el verificador; úsala cuando funcione. La carpeta vieja queda de respaldo |
+
+Lo propio de tu equipo va siempre en `.env`, `config\local\`, `scripts\local\` y PostgreSQL. Si editas archivos del proyecto directamente, esos cambios se pierden con una versión nueva.
+
+---
+
+## Si algo falla
+
+| Síntoma | Causa probable | Qué hacer |
+|---|---|---|
+| `python` no se reconoce | Python no está en el PATH | Prueba `py`; si no, reinstala marcando «Add Python to PATH» |
+| `pip install` falla por certificado o conexión | Un filtro de red | Mira la nota del paso 2 |
+| Error de «No module named streamlit» | Instalación incompleta o no usaste `venv\Scripts\python` | Repite el paso 2 y usa siempre `venv\Scripts\python` |
+| El portal no abre en el navegador | Se abrió pero con retraso | Entra manualmente a `http://localhost:8501` |
+| «No se encontró el archivo de datos» | Ruta mal escrita | Revisa `WM_EXCEL` en `.env` o `ruta` en la configuración |
+| «Falta la hoja…» o «Falta la columna requerida…» | El nombre no coincide | Corre el verificador y agrega el mapeo en `config\local\excel.yaml` |
+| Cuadros que dicen «Pendiente de datos» | Faltan columnas opcionales | No es un error |
+| Clientes sin posiciones | Las hojas usan RUT distintos (con y sin dígito verificador) | El verificador muestra cuántas filas no calzan; unifica el RUT en el origen |
+| «Base de datos no disponible» | PostgreSQL apagado o `WM_DSN` incorrecto | Revisa el paso 5 |
+| La página no abre desde otro computador | Firewall o IP cambiada | Paso 7 |
+| Un cliente aparece con otro advisor | Hay una reasignación del MD que aún no está en el Excel | Es normal: aparece como «Pendiente en el Excel» |
+
+---
+
+## Lista de verificación
+
+- [ ] Python 3.13 instalado y `pip install` terminó sin errores
+- [ ] El portal abre con 500 clientes de ejemplo
+- [ ] (Opcional) PostgreSQL conectado y sin el aviso «Base de datos no disponible»
+- [ ] Tu Excel armado según el Anexo, con un nombre sin «dummy»
+- [ ] `WM_EXCEL` en `.env` apuntando al Excel, guardado fuera de la carpeta del proyecto
+- [ ] `config\local\excel.yaml` con los nombres de hojas y columnas que no coinciden
+- [ ] El verificador no marca errores
+- [ ] «Calidad de datos» sin errores
+- [ ] 3 clientes revisados contra tu fuente
+- [ ] PIN por usuario activado antes de compartir con datos reales
+
+---
+
+## Anexo: formato del Excel que lee el portal
+
+Describe cada hoja y columna. Úsalo para armar tu archivo a mano o para pasárselo a un asistente como Copilot (el prompt está en A9). Todos los ejemplos son inventados, y el archivo de referencia es `data\Engine WM Dummy Completo.xlsx` (500 clientes sintéticos).
+
+### A1. Visión general
+
+El portal lee **un solo archivo Excel** con estas hojas. Los nombres de hoja son configurables en `config\local\excel.yaml`; en el dummy se llaman así:
+
+| Hoja (en el dummy) | Una fila es… | Para qué sirve | ¿Obligatoria? |
+|---|---|---|---|
+| `Dummy Metricas` | un cliente | Clientes, patrimonio, advisor, servicio, perfil, contactos | **Sí** |
+| `Dummy Posiciones` | una posición de un cliente en un instrumento | Ficha del cliente y exposición | Sí (sin ella, las fichas quedan vacías) |
+| `Dummy Carteras` | un instrumento dentro de un modelo (arquitectura × perfil) | Lista de instrumentos para armar portafolios, modelos de la casa, alineación | Sí para el constructor de portafolios y Alineación |
+| `Dummy Flujos` | un cliente en una quincena | Gráfico de aportes y retiros | No |
+
+En el archivo de salida, **no uses la palabra «Dummy» en el nombre de las hojas ni del archivo**: si el nombre del archivo contiene «dummy» o «sample», el portal muestra el aviso «Datos dummy». Nombres sugeridos: archivo `Engine WM Completo.xlsx`, hojas `Metricas`, `Posiciones`, `Carteras`, `Flujos`, e indicarlos en `config\local\excel.yaml`.
+
+---
+
+### A2. Reglas generales
+
+| Regla | Detalle |
+|---|---|
+| Encabezados | Una sola fila de encabezados. En el dummy están en la fila 3 (la fila 1 es un título y la 2 está vacía). Lo más simple es dejarlos en la fila 1 y poner `header_row: 0` en `config\local\excel.yaml` |
+| Nombre de columna | Exactamente el de este documento (el portal tolera mayúsculas, tildes y espacios de más, no palabras distintas) |
+| **RUT** | El mismo dato en todas las hojas. Puede venir con puntos, guion o espacios (el portal los ignora), pero **no** puede venir con dígito verificador en una hoja y sin él en otra |
+| Un cliente = una fila en Metricas | No repetir el RUT |
+| Fechas | Fecha real de Excel, o `AAAA-MM-DD` |
+| Números | Número real (sin `$`, sin texto como «n.d.»). Si no hay dato, la celda vacía |
+| Porcentajes | Se indica en cada columna si es fracción (0,25 = 25 %) o número de porcentaje (25 = 25 %) |
+| Texto | UTF-8, sin espacios al inicio ni al final |
+| Datos faltantes opcionales | Dejar la celda o la columna vacía; **no inventar valores** |
+
+---
+
+### A3. Hoja de clientes (`Metricas`)
+
+**Obligatorias.** Las cuatro marcadas con ★ son críticas: sin ellas el portal muestra error.
+
+| Columna | Tipo | Qué es |
+|---|---|---|
+| `RUT Normalizado` ★ | texto | Identificador único del cliente |
+| `Servicio` ★ | texto | Uno de: `TRA`, `ASE`, `ADC`, `Self directed`, `Cartera gestionada`, `Depósito a Plazo`. Variantes se unifican según `config\servicios.yaml`; lo que no reconoce queda «Sin clasificar» |
+| `IA` ★ | texto | Código del Investment Advisor responsable (el mismo código en todas sus filas) |
+| `Valor de Mercado (CLP)` ★ | número | Patrimonio del cliente en pesos |
+| `Entidad` | texto | Entidad legal |
+| `Household` | texto | Grupo familiar |
+| `WM` | texto | Código del wealth manager |
+| `Perfil de Riesgo` | texto | Perfil como lo escribe el origen |
+| `Perfil Normalizado` | texto | **Uno de cinco:** `PRESERVACION`, `DEFENSIVO`, `EQUILIBRADO`, `CLASICO_60_40`, `CRECIMIENTO` |
+| `Última Reunión` | fecha | Última reunión con el cliente |
+| `CAD (USD MM)` | número | Activos del cliente en millones de dólares (el portal lo usa para derivar el tipo de cambio) |
+
+**Opcionales** (si faltan, los cuadros que las usan dicen «Pendiente de datos»):
+
+| Columna | Tipo | Qué es |
+|---|---|---|
+| `ultimo_contacto` | fecha | Último contacto |
+| `tiene_wealth_plan` | verdadero/falso | Si tiene plan patrimonial |
+| `fecha_wealth_plan` | fecha | Fecha del plan |
+| `share_of_wallet_pct` | número (25 = 25 %) | Participación de la institución en el patrimonio total del cliente |
+| `desvio_modelo_pct` | número (−1,6 = −1,6 pp) | Desvío contra el modelo |
+| `arquitectura` | texto | Modelo asignado: `abierta_pesos`, `abierta_dolares`, `abierta_local` o `cerrada_pesos` |
+| `aportes_periodo`, `retiros_periodo` | número (CLP) | Aportes y retiros del período (se usan si no hay hoja de flujos) |
+| `periodo` | texto `AAAA-MM` | Período al que corresponden esos aportes y retiros |
+| `rentabilidad_12m_pct` | número (4,0 = 4 %) | Rentabilidad de 12 meses |
+| `comision_anual_clp`, `comision_cobrada_clp` | número (CLP) | Comisión anual estimada y cobrada |
+| `com_tra_renta_variable_clp`, `com_tra_renta_fija_clp`, `com_tra_intermediacion_clp`, `com_tra_allfunds_clp` | número (CLP) | Comisiones transaccionales por tipo |
+| `nombre_cliente`, `tipo_persona`, `nombre_advisor` | texto | Nombres reales. Si no vienen, el portal muestra nombres ficticios |
+
+---
+
+### A4. Hoja de posiciones (`Posiciones`)
+
+| Columna | Tipo | Obligatoria | Qué es |
+|---|---|---|---|
+| `RUT Normalizado` | texto | Sí | Cliente dueño de la posición (mismo RUT que en Metricas) |
+| `Instrumento` | texto | Sí | Nombre del instrumento |
+| `Tipo` | texto | Sí | Tipo de instrumento tal como lo entrega el origen |
+| `Isin` | texto | Sí | ISIN; si no tiene, `n.a.` |
+| `VM Numérico` | número (CLP) | Sí | Valor de mercado en pesos |
+| `G/P no Realizada` | número (CLP) | No | Ganancia o pérdida no realizada |
+| `Rent. no Realizada` | número (0,05 = 5 %) | No | Rentabilidad no realizada |
+| `Costo tributario (CLP)` | número | No | Impuesto estimado si se vende |
+| `Clase de activo` | texto | No | Clase de activo |
+
+Control de coherencia: **para cada cliente, la suma de sus posiciones debería ser cercana a su `Valor de Mercado (CLP)`** (el verificador lo mide).
+
+---
+
+### A5. Hoja de carteras (`Carteras`): los modelos de la casa
+
+Cada fila es un instrumento dentro de un modelo. Un modelo es una pareja **arquitectura × perfil**: 4 arquitecturas × 5 perfiles = 20 modelos en el dummy.
+
+| Columna | Tipo | Qué es |
+|---|---|---|
+| `arquitectura` | texto | `abierta_pesos`, `abierta_dolares`, `abierta_local`, `cerrada_pesos` |
+| `perfil` | texto | `Preservacion`, `Defensivo`, `Equilibrado`, `Clasico_60_40`, `Crecimiento` |
+| `Perfil Normalizado` | texto | El perfil en mayúsculas: `PRESERVACION`, etc. |
+| `instrumento` | texto | Nombre del instrumento |
+| `diccionario` | texto | Nombre unificado del instrumento: agrupa sus distintas series (dos series del mismo fondo comparten `diccionario`) |
+| `isin`, `bloomberg`, `nemotecnico` | texto | Identificadores; `n.a.` si no tiene |
+| `serie` | texto | Serie del fondo (C, I, F2, ETF…) |
+| `peso_objetivo` | número (0,10 = 10 %) | Peso del instrumento en el modelo |
+| `comision` | número (0,007 = 0,7 % anual) | Comisión del instrumento |
+| `yield`, `duracion` | número o `n.a.` | Rendimiento y duración |
+| `liquidez` | entero | Nivel de liquidez (en el dummy, 1 a 3) |
+| `pct_uf` | fracción 0–1 | Parte del instrumento en UF |
+| `moneda` | texto | `CLP` o `USD` |
+| `beneficio_tributario` | texto | `107`, `108` o `-` |
+| `pct_rf_local`, `pct_rf_high_yield_internacional`, `pct_rf_investment_grade` | fracción 0–1 | Desglose de renta fija |
+| `pct_renta_variable` | fracción 0–1 | Total de renta variable |
+| `pct_rv_usa`, `pct_rv_latam`, `pct_rv_chile`, `pct_rv_emergentes`, `pct_rv_japon`, `pct_rv_europa` | fracción 0–1 | Desglose de renta variable por región |
+| `pct_alternativos` | fracción 0–1 | Alternativos |
+| `pct_moneda_usd`, `pct_moneda_clp`, `pct_moneda_uf`, `pct_moneda_otras` | fracción 0–1 | Exposición por moneda |
+
+**Reglas de coherencia que el portal revisa:**
+- Los `peso_objetivo` de un mismo modelo (arquitectura × perfil) **suman 1** (tolerancia 0,005).
+- Las seis categorías `pct_rv_*` suman `pct_renta_variable` en cada fila.
+- Las cuatro `pct_moneda_*` suman 1 en cada fila.
+- `pct_moneda_uf` no supera a `pct_rf_local`.
+
+**Si en el origen esta información no existe en Excel,** el portal igual abre con las demás hojas; solo dejan de funcionar el constructor de portafolios y Alineación. Averigua de qué archivo salen los modelos y agrégalo al libro.
+
+---
+
+### A6. Hoja de flujos (`Flujos`), opcional
+
+Una fila por cliente y por quincena.
+
+| Columna | Tipo | Qué es |
+|---|---|---|
+| `RUT Normalizado` | texto | Cliente |
+| `Periodo` | fecha | Fecha de inicio de la quincena |
+| `Aportes (CLP)` | número | Aportes del período |
+| `Retiros (CLP)` | número | Retiros del período (positivo) |
+
+---
+
+### A7. Qué ocurre con los portafolios que arman los advisors
+
+**No van en el Excel.** Cada advisor arma el portafolio objetivo de sus clientes dentro del portal y se guarda en PostgreSQL, con versiones. Lo mismo vale para las reasignaciones que hace el MD. El Excel solo aporta los modelos de la casa (hoja de carteras) y las posiciones actuales.
+
+---
+
+### A8. Cómo comprobar el archivo generado
+
+```bash
+venv\Scripts\python scripts\verificar_excel.py --excel "ruta\Engine WM Completo.xlsx"
+```
+
+Dice qué hoja o columna no encuentra, qué línea agregar en `config\local\excel.yaml`, qué RUT no calzan entre hojas (solo en conteos) y si el patrimonio coincide con las posiciones. Termina con error si falta algo imprescindible.
+
+---
+
+### A9. Prompt para Copilot
+
+**Cómo usarlo:** arma un libro de Excel que tenga, en hojas distintas, (a) tus datos de donde estén y (b) las hojas del `Engine WM Dummy Completo`, que sirven de **molde de formato**. Pega este anexo y este prompt en Copilot.
+
+> En este libro hay dos tipos de hojas. Las que empiezan con «Dummy» son un **modelo de formato** con datos inventados: no copies sus filas al resultado. Las otras son mis datos, de distintas fuentes.
+>
+> Genera un archivo nuevo, `Engine WM Completo.xlsx`, con el mismo formato que las hojas Dummy (mismas hojas, mismos nombres de columna, sin la palabra «Dummy»), pero con **solo mis datos**.
+>
+> Antes de escribir código, muéstrame una tabla «columna de mis datos → columna del modelo» y dime qué columnas del modelo no tienen equivalente.
+>
+> Reglas: el RUT igual en todas las hojas y sin repetirse en la hoja de clientes; números y fechas reales; celdas vacías cuando no hay dato, sin inventar nada; no modificar los archivos de origen. El script no debe imprimir datos de clientes, solo conteos. Al final, comprueba que los pesos de cada modelo suman 1 y que la suma de las posiciones de cada cliente se parece a su patrimonio.
+
+**Qué cuidar:**
+1. El resultado debe tener **solo filas reales**: si se «acopla» dentro del mismo libro, se mezclarían los 500 clientes inventados con los reales.
+2. El nombre del archivo no debe contener «dummy» ni «sample».
+3. Al terminar, corre `venv\Scripts\python scripts\verificar_excel.py --excel "ruta"`. Si marca algo, copia el mensaje técnico (sin datos) a Copilot y corrígelo ahí.
+
+---
+
+### A10. Ejemplo, con datos inventados
+
+**Metricas**
+
+| RUT Normalizado | Entidad | Household | Servicio | WM | IA | Perfil de Riesgo | Perfil Normalizado | Última Reunión | Valor de Mercado (CLP) | CAD (USD MM) |
+|---|---|---|---|---|---|---|---|---|---|---|
+| RUT_0001 | ENTITY_01 | HH_01 | ASE | WM_01 | IA_01 | Equilibrado | EQUILIBRADO | 2026-08-12 | 850000000 | 0,90 |
+| RUT_0002 | ENTITY_02 | HH_02 | Cartera gestionada | WM_01 | IA_02 | Defensivo | DEFENSIVO | 2026-09-30 | 420000000 | 0,44 |
+
+**Posiciones**
+
+| RUT Normalizado | Instrumento | Tipo | Isin | VM Numérico | G/P no Realizada | Rent. no Realizada |
+|---|---|---|---|---|---|---|
+| RUT_0001 | Fondo Ejemplo Renta Fija | Fondo | CL0000000001 | 500000000 | 12000000 | 0,024 |
+| RUT_0001 | Fondo Ejemplo Acciones | Fondo | IE00EJEMPLO01 | 350000000 | -4000000 | -0,011 |
+| RUT_0002 | Fondo Ejemplo Renta Fija | Fondo | CL0000000001 | 420000000 | 6000000 | 0,014 |
+
+**Carteras** (solo algunas columnas)
+
+| arquitectura | perfil | Perfil Normalizado | instrumento | diccionario | isin | serie | peso_objetivo | comision | moneda |
+|---|---|---|---|---|---|---|---|---|---|
+| abierta_pesos | Equilibrado | EQUILIBRADO | Fondo Ejemplo Renta Fija | Fondo Ejemplo RF | CL0000000001 | C | 0,60 | 0,008 | CLP |
+| abierta_pesos | Equilibrado | EQUILIBRADO | Fondo Ejemplo Acciones | Fondo Ejemplo RV | IE00EJEMPLO01 | I | 0,40 | 0,010 | USD |
+
+Fíjate en que los dos pesos del modelo `abierta_pesos × Equilibrado` suman 1.
+
+Este archivo mínimo (solo las columnas obligatorias, con los encabezados en la fila 1 y `header_row: 0`) se probó con `scripts/verificar_excel.py`: 0 errores y 0 avisos. Todo lo demás es opcional y se puede ir sumando.
